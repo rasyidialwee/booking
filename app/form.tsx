@@ -1,18 +1,51 @@
 import { useState } from "react";
 import { SafeAreaView, StyleSheet, Text, TextInput } from "react-native";
 import PrimaryBtn from "../components/common/PrimaryBtn";
+import axios from "axios";
 
 const Form = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [totalPrice, setTotalPrice] = useState("");
-  const [depositPaid, setDepositPaid] = useState("");
-  const [checkInDate, setCheckInDate] = useState("");
-  const [checkOutDate, setCheckOutDate] = useState("");
-  const [additionalNeeds, setAdditionalNeeds] = useState("");
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    totalPrice: "",
+    depositPaid: "",
+    checkInDate: "",
+    checkOutDate: "",
+    additionalNeeds: "",
+  });
+
+  const handleChange = (key, value) => {
+    setFormData({ ...formData, [key]: value });
+  };
 
   const submit = () => {
     console.log("submit");
+    axios
+      .post(
+        "https://restful-booker.herokuapp.com/booking",
+        {
+          firstname: formData.firstName,
+          lastname: formData.lastName,
+          totalprice: formData.totalPrice,
+          depositpaid: true,
+          bookingdates: {
+            checkin: formData.checkInDate,
+            checkout: formData.checkOutDate,
+          },
+          additionalneeds: formData.additionalNeeds,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -25,52 +58,52 @@ const Form = () => {
       <TextInput
         style={styles.input}
         placeholder="First Name"
-        value={firstName}
-        onChangeText={setFirstName}
+        value={formData.firstName}
+        onChangeText={(text) => handleChange("firstName", text)}
       />
 
       <TextInput
         style={styles.input}
         placeholder="Last Name"
-        value={lastName}
-        onChangeText={setLastName}
+        value={formData.lastName}
+        onChangeText={(text) => handleChange("lastName", text)}
       />
 
       <TextInput
         style={styles.input}
         placeholder="Check In Date"
-        value={checkInDate}
-        onChangeText={setCheckInDate}
+        value={formData.checkInDate}
+        onChangeText={(text) => handleChange("checkInDate", text)}
       />
 
       <TextInput
         style={styles.input}
         placeholder="Check Out Date"
-        value={checkOutDate}
-        onChangeText={setCheckOutDate}
+        value={formData.checkOutDate}
+        onChangeText={(text) => handleChange("checkOutDate", text)}
       />
 
       <TextInput
         style={styles.input}
         placeholder="Total Price"
         keyboardType="numeric"
-        value={totalPrice}
-        onChangeText={setTotalPrice}
+        value={formData.totalPrice}
+        onChangeText={(text) => handleChange("totalPrice", text)}
       />
 
       <TextInput
         style={styles.input}
         placeholder="Deposit Paid"
         keyboardType="numeric"
-        value={depositPaid}
-        onChangeText={setDepositPaid}
+        value={formData.depositPaid}
+        onChangeText={(text) => handleChange("depositPaid", text)}
       />
 
       <TextInput
         style={styles.input}
         placeholder="Additional Needs"
-        value={additionalNeeds}
-        onChangeText={setAdditionalNeeds}
+        value={formData.additionalNeeds}
+        onChangeText={(text) => handleChange("additionalNeeds", text)}
       />
       <PrimaryBtn title="Submit" handlePress={submit} />
     </SafeAreaView>

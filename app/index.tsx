@@ -17,8 +17,9 @@ const Bookings = () => {
       const response = await axios.get(
         "https://restful-booker.herokuapp.com/booking"
       );
-      // const limitData = response.data.slice(0, 10);
-      setBookings(response.data);
+      const limitData = response.data.slice(0, 10);
+      setBookings(limitData);
+      // setBookings(response.data);
     } catch (error) {
       setBookings(error.message);
     }
