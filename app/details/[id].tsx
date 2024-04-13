@@ -17,15 +17,18 @@ const Details = () => {
         `https://restful-booker.herokuapp.com/booking/${id}`,
         {
           headers: {
-            "Content-Type": "application/json",
+            Accept: "application/json",
           },
         }
       );
-      console.log("response", response.data);
+      console.log(response.data);
 
       setBooking(response.data);
     } catch (error) {
-      setBooking(error.message);
+      console.log(JSON.stringify(error));
+      setBooking;
+
+      // setBooking(JSON.stringify(error));
     }
   };
   return (
@@ -36,7 +39,13 @@ const Details = () => {
       }}
     >
       <View style={styles.card}>
-        <Text>{booking}</Text>
+        <Text>{booking?.firstname}</Text>
+        <Text>{booking?.lastname}</Text>
+        <Text>{booking?.totalprice}</Text>
+        <Text>{booking?.depositpaid ? "yes" : "no"}</Text>
+        <Text>{booking?.bookingdates.checkin}</Text>
+        <Text>{booking?.bookingdates.checkout}</Text>
+        <Text>{booking?.additionalneeds}</Text>
       </View>
     </SafeAreaView>
   );
