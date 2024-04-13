@@ -1,10 +1,14 @@
-import { Text, View } from "react-native";
+import { Text, SafeAreaView } from "react-native";
 
 const Profile = () => {
   return (
-    <View>
+    <SafeAreaView
+      style={{
+        paddingHorizontal: 10,
+      }}
+    >
       <Text>profile</Text>
-    </View>
+    </SafeAreaView>
   );
 };
 
