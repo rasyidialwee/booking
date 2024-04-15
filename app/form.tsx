@@ -1,12 +1,20 @@
 import { useState } from "react";
-import { SafeAreaView, StyleSheet, Text, TextInput } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  Switch,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import PrimaryBtn from "../components/common/PrimaryBtn";
 import axios from "axios";
+import { router } from "expo-router";
 
 const Form = () => {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    firstName: "Rasyidi",
+    lastName: "Alwee",
     totalPrice: "",
     depositPaid: "",
     checkInDate: "",
@@ -20,6 +28,7 @@ const Form = () => {
 
   const submit = () => {
     console.log("submit");
+
     axios
       .post(
         "https://restful-booker.herokuapp.com/booking",
@@ -27,7 +36,7 @@ const Form = () => {
           firstname: formData.firstName,
           lastname: formData.lastName,
           totalprice: formData.totalPrice,
-          depositpaid: true,
+          depositpaid: formData.depositPaid,
           bookingdates: {
             checkin: formData.checkInDate,
             checkout: formData.checkOutDate,
@@ -37,11 +46,13 @@ const Form = () => {
         {
           headers: {
             "Content-Type": "application/json",
+            Accept: "application/json",
           },
         }
       )
       .then((response) => {
-        console.log(response.data);
+        console.log("success", response.data);
+        router.push("profile");
       })
       .catch((error) => {
         console.log(error);
@@ -91,13 +102,16 @@ const Form = () => {
         onChangeText={(text) => handleChange("totalPrice", text)}
       />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Deposit Paid"
-        keyboardType="numeric"
-        value={formData.depositPaid}
-        onChangeText={(text) => handleChange("depositPaid", text)}
-      />
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <Text>Depost Paid</Text>
+        <Switch
+          trackColor={{ false: "#767577", true: "#81b0ff" }}
+          thumbColor={formData.depositPaid ? "#f5dd4b" : "#f4f3f4"}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={(value) => handleChange("depositPaid", value)}
+          value={formData.depositPaid}
+        />
+      </View>
 
       <TextInput
         style={styles.input}

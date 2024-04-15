@@ -41,7 +41,7 @@ const RootLayout = () => {
           headerTitleAlign: "center",
         }}
       />
-      <Stack.Screen name="profile" />
+      <Stack.Screen name="profile" options={{ title: "My Profile" }} />
     </Stack>
   );
 };
